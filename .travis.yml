@@ -6,35 +6,24 @@ deploy:
   provider: releases
   api_key:
     secure: X50tvNXSlR2UE3B4kY8vUy0oK23Zh5j5QSyDFhEpgkYJ0IqwSqRJl5s23fivw+0Wcl8tZGQEhTIoYKYKofh3eP6Gov6YaycbSTP7aCiaMtTdvpuveJA6qZzy7e8obm+BxrtwNPnvkijzZZahQ3pBlRTED0vluCSTl29oes2ESvJ2LmygXjNTXSSCFS8b9qJsTc/vwFqLW6ytQKjemefovhbWb5xPBkYHPeXTcYoHOcASCIyo+/hmVRd2HNX8xtXhnaM6dcsUix8AbSsqCthTR8nWJb2E1uaOGUlIz0STfZpBaMIbExZSKguF+Vr4tT3mcf9N1miT9AzpsDzRbzNl14GsKL/biwu9UulMvi6taxS/1mCpoQe+BcRSLOcuUmr1ysctbXun5ForaLeZl89IcmLEoVU0pHIi2R34vcXCceSSa0nwXjU3418VM/f6CmoM2Q24OK20yESILjDqF//2g98sdTjTzH3kSQN5Z/zZAnMOsaqC237ti/wWjxRzeEsihcSvDnuSUbJmNlRDgjWvlRjtF2+rb9UVks/9puOX8qdLgyt3YGtrBm0GXDQKyPIj1RuzQAagS2AVIRGIkT+BDeKtF+gRcP+dHTIb9RKa+sESrhRBf03NjSG3P8CYQQlY+Kc2lYZGTB2euXC4OmPui+FnrhxerpEMP4oy7wBdMx0=
-  file: emergence-osx-release.zip
+  file_glob: true
+  file: ${HOME}/build/${TRAVIS_REPO_SLUG}/emergence-*-release.zip
   on:
     repo: JarvusInnovations/emergence-cluster
     branch: release
-    condition: $TRAVIS_OS_NAME = osx
     tags: false
 
-deploy:
-  provider: releases
-  api_key:
-    secure: X50tvNXSlR2UE3B4kY8vUy0oK23Zh5j5QSyDFhEpgkYJ0IqwSqRJl5s23fivw+0Wcl8tZGQEhTIoYKYKofh3eP6Gov6YaycbSTP7aCiaMtTdvpuveJA6qZzy7e8obm+BxrtwNPnvkijzZZahQ3pBlRTED0vluCSTl29oes2ESvJ2LmygXjNTXSSCFS8b9qJsTc/vwFqLW6ytQKjemefovhbWb5xPBkYHPeXTcYoHOcASCIyo+/hmVRd2HNX8xtXhnaM6dcsUix8AbSsqCthTR8nWJb2E1uaOGUlIz0STfZpBaMIbExZSKguF+Vr4tT3mcf9N1miT9AzpsDzRbzNl14GsKL/biwu9UulMvi6taxS/1mCpoQe+BcRSLOcuUmr1ysctbXun5ForaLeZl89IcmLEoVU0pHIi2R34vcXCceSSa0nwXjU3418VM/f6CmoM2Q24OK20yESILjDqF//2g98sdTjTzH3kSQN5Z/zZAnMOsaqC237ti/wWjxRzeEsihcSvDnuSUbJmNlRDgjWvlRjtF2+rb9UVks/9puOX8qdLgyt3YGtrBm0GXDQKyPIj1RuzQAagS2AVIRGIkT+BDeKtF+gRcP+dHTIb9RKa+sESrhRBf03NjSG3P8CYQQlY+Kc2lYZGTB2euXC4OmPui+FnrhxerpEMP4oy7wBdMx0=
-  file: emergence-linux-release.zip
-  on:
-    repo: JarvusInnovations/emergence-cluster
-    branch: release
-    condition: $TRAVIS_OS_NAME = linux
-    tags: false
-
-before_deploy:
+after_success:
   - git config --global user.email "builds@travis-ci.com"
   - git config --global user.name "Travis CI"
-  - export GIT_TAG=$TRAVIS_BRANCH-0.1.$TRAVIS_BUILD_NUMBER
-  - git tag $GIT_TAG -a -m "Generated tag from TravisCI for build $TRAVIS_BUILD_NUMBER"
-  - git push -q https://$TAGPERM@github.com/JarvusInnovations/emergence-cluster --tags
-  - ls -R
+  - export GIT_TAG=build-$TRAVIS_BRANCH-$(date -u "+%Y-%m-%d-%H-%M-%S")-$TRAVIS_BUILD_NUMBER
+  - git tag $GIT_TAG -a -m "Generated tag from TravisCI build $TRAVIS_BUILD_NUMBER"
+  - git push origin $GIT_TAG
 
 branches:
   except:
     - /^*-v[0-9]/
+    - /build-.+-\d{4}-\d{2}-\d{2}-.*/
 
 notifications:
   email:
