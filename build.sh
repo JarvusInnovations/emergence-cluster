@@ -1,6 +1,6 @@
 #!/bin/sh
 
-mdkir dist
+mkdir dist
 
 echo "OSX releases work" > osx.txt
 zip dist/emergence-osx-release.zip osx.txt
