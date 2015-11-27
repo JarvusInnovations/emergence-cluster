@@ -17,7 +17,7 @@ after_success:
   - git config --global user.name "Travis CI"
   - export GIT_TAG=build-$TRAVIS_BRANCH-$(date -u "+%Y-%m-%d-%H-%M-%S")-$TRAVIS_BUILD_NUMBER-$TRAVIS_OS_NAME
   - git tag $GIT_TAG -a -m "Generated tag from TravisCI build ($TRAVIS_OS_NAME) $TRAVIS_BUILD_NUMBER"
-  - git add dist/emergence-$TRAVIS_OS_NAME-build.zip
+  - git add dist/emergence-$TRAVIS_OS_NAME-release.zip
   - git commit "TravisCI build ($TRAVIS_OS_NAME) $TRAVIS_BUILD_NUMBER"
   - git push origin $GIT_TAG
 
