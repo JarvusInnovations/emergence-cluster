@@ -22,6 +22,6 @@ deploy:
     branch: release
     condition: $TRAVIS_OS_NAME = linux
 
-script: build.sh
+script: ./build.sh
 
 
