@@ -2,8 +2,5 @@
 
 mkdir dist
 
-echo "OSX releases work" > osx.txt
-zip dist/emergence-osx-release.zip osx.txt
-
-echo "LINUX releases work" > linux.txt
-zip dist/emergence-osx-release.zip linux.txt
+echo "$TRAVIS_OS_NAME releases work" > $TRAVIS_OS_NAME.txt
+zip dist/emergence-$TRAVIS_OS_NAME-release.zip $TRAVIS_OS_NAME.txt
